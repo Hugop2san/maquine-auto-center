@@ -1,58 +1,302 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚗 Maquine Auto Center - API (MVP)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é um **MVP (Minimum Viable Product)** desenvolvido para a **Maquine Automotiva**, com o objetivo de fornecer uma base sólida para um sistema de gestão de mecânica.
 
-## About Laravel
+A aplicação foi construída utilizando **Laravel** e containerizada com **Docker**, utilizando **PostgreSQL** como banco de dados.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# 📌 Objetivo do Projeto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Este projeto representa a primeira versão funcional (**MVP**) de um sistema para:
 
-## Learning Laravel
+* Gerenciamento de clientes
+* Organização de serviços automotivos
+* Estrutura para futuras integrações (BI, front-end, etc.)
+* Base para evolução do sistema completo da empresa
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# 🛠️ Tecnologias Utilizadas
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+* PHP 8.3
+* Laravel (API)
+* Docker + Docker Compose
+* PostgreSQL
+* Nginx
 
-## Agentic Development
+---
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+# ⚙️ Pré-requisitos
+
+Antes de rodar o projeto, você precisa ter instalado:
+
+## 🐳 Docker
+
+* Docker Engine
+* Docker Compose
+
+## 💻 Ambiente
+
+* Linux ou WSL (Windows Subsystem for Linux)
+* Git
+* Composer (opcional, pois usamos dentro do container)
+
+---
+
+# 🐧 Instalando no WSL (Windows)
+
+## 1. Instalar WSL
+
+No PowerShell (como administrador):
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+wsl --install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## 2. Instalar Ubuntu
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Após reiniciar, escolha Ubuntu e crie seu usuário.
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 3. Instalar Docker Desktop (Windows)
 
-## Security Vulnerabilities
+* Baixe e instale o Docker Desktop
+* Vá em:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+  * Settings → Resources → WSL Integration
+* Ative sua distro (Ubuntu)
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 4. Testar Docker no WSL
+
+```bash
+docker ps
+```
+
+Se aparecer erro de permissão:
+
+```bash
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+---
+
+# 🚀 Como rodar o projeto
+
+## 1. Clonar o repositório
+
+```bash
+git clone <url-do-repo>
+cd maquine-auto-center
+```
+
+---
+
+## 2. Subir os containers
+
+```bash
+docker-compose up -d --build
+```
+
+---
+
+## 3. Configurar o ambiente
+
+Copie o `.env`:
+
+```bash
+cp .env.example .env
+```
+
+---
+
+## 4. Configurar banco de dados no `.env`
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=db
+DB_PORT=5432
+DB_DATABASE=laravel
+DB_USERNAME=laravel
+DB_PASSWORD=secret
+```
+
+---
+
+## 5. Gerar chave da aplicação
+
+```bash
+docker exec -it laravel_app php artisan key:generate
+```
+
+---
+
+## 6. Rodar migrations
+
+```bash
+docker exec -it laravel_app php artisan migrate
+```
+
+---
+
+## 7. Acessar o projeto
+
+Abra no navegador:
+
+```
+http://localhost:8000
+```
+
+---
+
+# 🔌 Testando a API
+
+Exemplo de rota de teste:
+
+```
+GET http://localhost:8000/api/teste
+```
+
+Resposta esperada:
+
+```json
+{
+  "status": true,
+  "msg": "API funcionando 🚀"
+}
+```
+
+---
+
+# 🧪 Comandos úteis
+
+## Ver containers rodando
+
+```bash
+docker ps
+```
+
+## Entrar no container
+
+```bash
+docker exec -it laravel_app bash
+```
+
+## Parar containers
+
+```bash
+docker-compose down
+```
+
+## Limpar cache Laravel
+
+```bash
+php artisan optimize:clear
+```
+
+---
+
+# ⚠️ Problemas comuns e soluções
+
+## ❌ Erro: Permission denied (Docker)
+
+```bash
+permission denied while trying to connect to the Docker daemon
+```
+
+### ✔️ Solução:
+
+```bash
+sudo usermod -aG docker $USER
+newgrp docker
+```
+
+---
+
+## ❌ Erro: PHP versão incompatível
+
+```bash
+requires php ^8.3
+```
+
+### ✔️ Solução:
+
+Atualizar o `Dockerfile` para:
+
+```dockerfile
+FROM php:8.3-fpm
+```
+
+---
+
+## ❌ Erro: 404 nas rotas da API
+
+### ✔️ Verifique:
+
+* Se está acessando com `/api`
+* Se o `api.php` está registrado no `bootstrap/app.php`
+* Se o Nginx aponta para `/public`
+
+---
+
+## ❌ Erro: banco não conecta
+
+### ✔️ Verifique:
+
+```env
+DB_HOST=db
+```
+
+⚠️ Nunca use `localhost` no Docker
+
+---
+
+## ❌ Warning: tempnam()
+
+### ✔️ Solução:
+
+```bash
+chmod -R 777 storage bootstrap/cache
+```
+
+---
+
+# 📂 Estrutura do Projeto
+
+```
+app/
+routes/
+docker/
+├── nginx/
+│   └── default.conf
+Dockerfile
+docker-compose.yml
+```
+
+---
+
+# 🚀 Próximos Passos (Evolução do Projeto)
+
+* Implementação de autenticação (JWT ou Sanctum)
+* CRUD completo (clientes, serviços, veículos)
+* Integração com frontend (React ou mobile)
+* Dashboard com BI
+* Deploy em produção
+
+---
+
+# 👨‍💻 Autor
+
+Projeto desenvolvido como parte de evolução profissional em desenvolvimento backend e sistemas para gestão empresarial.
+
+---
+
+# 📄 Licença
+
+Este projeto está sob a licença MIT.
