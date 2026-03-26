@@ -3,5 +3,10 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
+})->name('login');
+
+Route::get('/registro', function () {
+    return view('register');
 });
+
