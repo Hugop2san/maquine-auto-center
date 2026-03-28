@@ -2,54 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreClientRequest;
+use App\Http\Requests\UpdateClientRequest;
 
 class ClientController extends Controller
 {
-    // Listar todos os clientes
+    // Simulando um banco de dados na memória
+    private static $clientesFake = [
+        ['id' => 1, 'nome' => 'Oficina do Prime', 'documento' => '12345678000199', 'documento_tipo' => 'CNPJ'],
+        ['id' => 2, 'nome' => 'Carlos Mecânico', 'documento' => '11122233344', 'documento_tipo' => 'CPF'],
+    ];
+
+    // GET /clients - Listar
     public function index()
     {
-        $clients = Client::all();
-
-        return view('clients.index', compact('clients'));
+        return response()->json([
+            'message' => 'Lista de clientes (Modo Simulação)',
+            'data' => self::$clientesFake,
+        ], 200);
     }
 
-    // Salvar novo cliente no banco
-    public function store(Request $request)
+    // POST /clients - Criar
+    public function store(StoreClientRequest $request)
     {
-        $validated = $request->validate([
-            'nome' => 'required|string|max:255',
-            'documento' => 'required|string|max:14|unique:clients',
-            'documento_tipo' => 'required|in:CPF,CNPJ', // Validação baseada no seu CHECK[cite: 1]
-            'email' => 'nullable|email',
-            'data_nascimento' => 'nullable|date',
-        ]);
+        // Pega os dados que passaram na validação do StoreClientRequest
+        $dados = $request->validated();
 
-        Client::create($validated);
+        // Simula a criação adicionando um ID aleatório
+        $novoCliente = array_merge(['id' => rand(3, 999)], $dados);
 
-        return redirect()->route('clients.index')->with('success', 'Cliente cadastrado!');
+        return response()->json([
+            'message' => 'Cliente criado com sucesso (Simulado)!',
+            'data' => $novoCliente,
+        ], 201); // 201 é o status de "Created"
     }
 
-    // Mostrar um cliente específico
-    public function show(Client $client)
+    // GET /clients/{id} - Mostrar um
+    public function show($id)
     {
-        return view('clients.show', compact('client'));
+        // Apenas para teste, retornamos sempre o primeiro do mock
+        return response()->json([
+            'data' => self::$clientesFake[0],
+        ], 200);
     }
 
-    // Atualizar dados
-    public function update(Request $request, Client $client)
+    // PUT /clients/{id} - Atualizar
+    public function update(UpdateClientRequest $request, $id)
     {
-        $client->update($request->all());
+        $dados = $request->validated();
 
-        return redirect()->route('clients.index');
+        return response()->json([
+            'message' => "Cliente {$id} atualizado (Simulado)!",
+            'data' => $dados,
+        ], 200);
     }
 
-    // Excluir cliente
-    public function destroy(Client $client)
+    // DELETE /clients/{id} - Deletar
+    public function destroy($id)
     {
-        $client->delete();
-
-        return redirect()->route('clients.index');
+        return response()->json([
+            'message' => "Cliente {$id} removido do sistema.",
+        ], 200);
     }
 }
